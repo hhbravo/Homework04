@@ -10,15 +10,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hans.homerwok04.R
+import com.hans.homerwok04.listener.ProductListener
 import com.hans.homerwok04.model.Product
 import java.io.IOException
 import java.io.InputStream
 
 
-class ProductAdapter :
+class ProductAdapter(val context: Context, val listener: ProductListener) :
     RecyclerView.Adapter<ProductAdapter.Companion.ViewHolder>() {
 
     private var productList: List<Product> = listOf()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.row_product, parent, false)
@@ -39,12 +41,17 @@ class ProductAdapter :
 
 
         holder.tvName.text = name
-        holder.tvPrice.text = "S/".plus("$price")
-        holder.tvStock.text = "Stock".plus("$stock")
-        //holder.tvImage.setImageBitmap(getBitmapFromAssets(image))
+        holder.tvPrice.text = "S/ ".plus("$price")
+        holder.tvStock.text = "Stock ".plus("$stock")
+ //       holder.tvImage.setImageBitmap(getBitmapFromAssets(image))
+
+        holder.itemView.setOnClickListener{
+            listener.onClickProduct(item)
+        }
+
     }
 
-/*
+
     fun getBitmapFromAssets(fileName: String): Bitmap {
         val assetManager = context.assets
 
@@ -56,7 +63,7 @@ class ProductAdapter :
         }
 
         return BitmapFactory.decodeStream(istr)//istr will be null
-    }*/
+    }
 
     fun addData(values: List<Product>) {
         productList = values
@@ -67,7 +74,7 @@ class ProductAdapter :
             val tvName: TextView = v.findViewById(R.id.tvName)
             val tvPrice: TextView = v.findViewById(R.id.tvPrice)
             val tvStock: TextView = v.findViewById(R.id.tvStock)
-            //val tvImage: ImageView = v.findViewById(R.id.tvImage)
+            val tvImage: ImageView = v.findViewById(R.id.tvImage)
         }
     }
 }
